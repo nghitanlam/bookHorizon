@@ -1,5 +1,7 @@
 package com.nolan.book.book.service.impl;
 
+import com.nolan.book.author.entity.Author;
+import com.nolan.book.author.repository.AuthorRepository;
 import com.nolan.book.book.dto.BookRequestDto;
 import com.nolan.book.book.dto.BookResponseDto;
 import com.nolan.book.book.entity.Book;
@@ -23,11 +25,19 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
+    private final AuthorRepository authorRepository;
+
     private final BookMapper bookMapper;
 
     @Override
     public Integer save(BookRequestDto request) {
         Book book = bookMapper.toBook(request);
+
+        Author author = authorRepository.findById(request.authorId())
+                .orElseThrow(() -> new EntityNotFoundException("Author not found"));
+
+        book.setAuthor(author);
+
         return bookRepository.save(book).getId();
     }
 
@@ -40,7 +50,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public PageResponse<BookResponseDto> findAllBooks(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdDate").descending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("price").descending());
         Page<Book> books = bookRepository.findAllDisplayableBooks(pageable);
         List<BookResponseDto> bookResponse = books.stream()
                 .map(bookMapper::toBookResponse)

@@ -1,23 +1,20 @@
 package com.nolan.book.book.entity;
 
-import com.nolan.book.author.Author;
-import com.nolan.book.common.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.experimental.SuperBuilder;
+import com.nolan.book.author.entity.Author;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book extends BaseEntity {
+public class Book {
+
+    @Id
+    @GeneratedValue
+    private Integer id;
 
     private String title;
 
