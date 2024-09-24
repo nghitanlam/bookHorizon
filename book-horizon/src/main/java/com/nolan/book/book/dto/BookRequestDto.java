@@ -20,8 +20,10 @@ public record BookRequestDto (
         String synopsis,
 
         @NotNull(message = "103")
-        @NotEmpty(message = "103")
         Long price,
+
+        @NotNull(message = "103")
+        Integer authorId,
 
         boolean available
 ) { }
